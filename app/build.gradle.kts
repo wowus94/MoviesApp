@@ -53,6 +53,9 @@ android {
 
 dependencies {
 
+    // Coil
+    implementation("io.coil-kt:coil-compose:1.3.2")
+
     //Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")

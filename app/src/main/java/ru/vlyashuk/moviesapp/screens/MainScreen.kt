@@ -18,12 +18,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import ru.vlyashuk.moviesapp.MainViewModel
+import ru.vlyashuk.moviesapp.R
 import ru.vlyashuk.moviesapp.data.models.Movies
 import ru.vlyashuk.moviesapp.navigation.Screens
 
@@ -65,7 +67,7 @@ fun MovieItem(item: Movies, navController: NavController) {
         ) {
             Image(
                 painter = rememberImagePainter(item.image.medium),
-                contentDescription = "Movie Image",
+                contentDescription = stringResource(id = R.string.image_movies_content_description),
                 modifier = Modifier.size(128.dp)
             )
             Column {

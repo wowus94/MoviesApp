@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.StarHalf
 import androidx.compose.material.icons.filled.Search
@@ -29,6 +31,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,10 +41,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import coil.compose.rememberImagePainter
 import ru.vlyashuk.moviesapp.MainViewModel
 import ru.vlyashuk.moviesapp.R
 import ru.vlyashuk.moviesapp.data.models.Movies
+import ru.vlyashuk.moviesapp.navigation.BottomNavItem
 import ru.vlyashuk.moviesapp.navigation.Screens
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -51,6 +57,7 @@ import kotlin.math.floor
 @Composable
 fun MainScreen(navController: NavController, viewModel: MainViewModel) {
     val allMovies = viewModel.allMovies.observeAsState(listOf()).value
+    val navControllerBottomNavItem = rememberNavController()
     Surface(
         modifier = Modifier
             .fillMaxSize()
@@ -79,7 +86,11 @@ fun MainScreen(navController: NavController, viewModel: MainViewModel) {
                     }
                 }
             )
-        }) {
+        },
+            bottomBar = {
+                BottomNavBar(navController = navControllerBottomNavItem)
+            }
+        ) {
             LazyVerticalGrid(
                 columns = GridCells.Fixed(2),
                 contentPadding = PaddingValues(
@@ -177,6 +188,40 @@ fun RatingBar(
                 imageVector = Icons.Outlined.StarOutline,
                 contentDescription = null,
                 tint = starsColor
+            )
+        }
+    }
+}
+
+@Composable
+fun BottomNavBar(
+    navController: NavController
+) {
+    val listItems = listOf(
+        BottomNavItem.Home,
+        BottomNavItem.Search,
+        BottomNavItem.Profile,
+    )
+    BottomNavigation(
+        backgroundColor = Color.Black
+    ) {
+        val backStackEntry by navController.currentBackStackEntryAsState()
+        val currentRoute = backStackEntry?.destination?.route
+        listItems.forEach { item ->
+            BottomNavigationItem(
+                selected = currentRoute == item.route,
+                onClick = { /*TODO*/ },
+                icon = {
+                    androidx.compose.material.Icon(
+                        imageVector = item.icon,
+                        contentDescription = ""
+                    )
+                },
+                label = {
+                    Text(text = item.label, fontSize = 12.sp, color = Color.White)
+                },
+                selectedContentColor = Color.Red,
+                unselectedContentColor = Color.White
             )
         }
     }
